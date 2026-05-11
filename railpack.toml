@@ -1,0 +1,5 @@
+[start]
+command = "pnpm --filter @forkmarked/api start"
+
+[build]
+command = "pnpm --filter @forkmarked/api build"
