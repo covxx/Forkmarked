@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Slot, useRouter, useSegments } from "expo-router";
 import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { tokenCache } from "../lib/clerk-token-cache";
 import { setTokenGetter } from "../lib/auth";
 import { queryClient } from "../lib/query-client";
@@ -23,12 +24,13 @@ function AuthGate() {
   useEffect(() => {
     if (!isLoaded) return;
 
-    const inAuthGroup = segments[0] === "(auth)";
+    const inApp = segments[0] === "(app)";
+    const inAuth = segments[0] === "(auth)";
 
-    if (!isSignedIn && inAuthGroup) {
+    if (!isSignedIn && (inApp || inAuth)) {
       router.replace("/(public)/sign-in");
-    } else if (isSignedIn && !inAuthGroup) {
-      router.replace("/(auth)/home");
+    } else if (isSignedIn && !inApp) {
+      router.replace("/(app)");
     }
   }, [isLoaded, isSignedIn, segments]);
 
@@ -37,12 +39,14 @@ function AuthGate() {
 
 export default function RootLayout() {
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <ClerkLoaded>
-        <QueryClientProvider client={queryClient}>
-          <AuthGate />
-        </QueryClientProvider>
-      </ClerkLoaded>
-    </ClerkProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+        <ClerkLoaded>
+          <QueryClientProvider client={queryClient}>
+            <AuthGate />
+          </QueryClientProvider>
+        </ClerkLoaded>
+      </ClerkProvider>
+    </GestureHandlerRootView>
   );
 }

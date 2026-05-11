@@ -20,7 +20,7 @@ export default function OnboardScreen() {
     onboard.mutate(
       { username, name: name || undefined, bio: bio || undefined },
       {
-        onSuccess: () => router.replace("/(auth)/home"),
+        onSuccess: () => router.replace("/(app)"),
         onError: (err) => Alert.alert("Error", err.message),
       },
     );
