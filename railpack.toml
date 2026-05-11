@@ -2,4 +2,4 @@
 command = "pnpm --filter @forkmarked/api start"
 
 [build]
-command = "pnpm --filter @forkmarked/api build"
+command = "pnpm --filter @forkmarked/db generate && pnpm --filter @forkmarked/api build"

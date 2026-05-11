@@ -15,7 +15,10 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.srjlabs.forkmarked"
+      "bundleIdentifier": "com.srjlabs.forkmarked",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
