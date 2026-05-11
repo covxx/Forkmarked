@@ -10,7 +10,7 @@
     "db:migrate": "pnpm --filter @forkmarked/db migrate",
     "db:studio": "pnpm --filter @forkmarked/db studio",
     "start": "pnpm --filter @forkmarked/api start",
-    "build": "pnpm --filter @forkmarked/api build",
+    "build": "pnpm --filter @forkmarked/db generate && pnpm --filter @forkmarked/api build",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck"
   },
