@@ -1,0 +1,38 @@
+{
+  "name": "@forkmarked/mobile",
+  "version": "0.0.1",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "ios": "expo run:ios",
+    "android": "expo run:android",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clerk/clerk-expo": "latest",
+    "@forkmarked/types": "workspace:*",
+    "@forkmarked/utils": "workspace:*",
+    "@tanstack/react-query": "^5.62.0",
+    "expo": "latest",
+    "expo-haptics": "latest",
+    "expo-image": "latest",
+    "expo-linking": "latest",
+    "expo-router": "latest",
+    "expo-secure-store": "latest",
+    "expo-status-bar": "latest",
+    "nativewind": "^4.1.0",
+    "react": "^19.0.0",
+    "react-native": "latest",
+    "react-native-safe-area-context": "latest",
+    "react-native-screens": "latest",
+    "react-native-web": "latest",
+    "tailwindcss": "^3.4.0",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}

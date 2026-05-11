@@ -1,0 +1,30 @@
+{
+  "name": "@forkmarked/api",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup src/index.ts --format esm --dts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1045.0",
+    "@aws-sdk/s3-request-presigner": "^3.1045.0",
+    "@clerk/backend": "latest",
+    "@forkmarked/db": "workspace:*",
+    "@forkmarked/types": "workspace:*",
+    "@forkmarked/utils": "workspace:*",
+    "@hono/node-server": "latest",
+    "@hono/zod-validator": "latest",
+    "dotenv": "^17.4.2",
+    "hono": "latest",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "tsup": "latest",
+    "tsx": "latest",
+    "typescript": "^5.7.0"
+  }
+}

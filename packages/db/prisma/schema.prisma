@@ -1,0 +1,184 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique @map("clerk_id")
+  username  String   @unique
+  email     String   @unique
+  name      String?
+  bio       String?
+  avatarUrl String?  @map("avatar_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  recipes     Recipe[]
+  collections Collection[]
+  reviews     Review[]
+  comments    Comment[]
+  likes       Like[]
+
+  following Follow[] @relation("follower")
+  followers Follow[] @relation("following")
+
+  @@map("users")
+}
+
+model Recipe {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  ingredients Json
+  steps       Json
+  servings    Int?
+  prepTime    Int?     @map("prep_time")
+  cookTime    Int?     @map("cook_time")
+  coverImage  String?  @map("cover_image")
+  sourceUrl   String?  @map("source_url")
+  isPublic    Boolean  @default(true) @map("is_public")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  authorId String @map("author_id")
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  recipeTags    RecipeTag[]
+  recipeEntries RecipeEntry[]
+  reviews       Review[]
+  comments      Comment[]
+  likes         Like[]
+
+  @@index([authorId])
+  @@index([isPublic, createdAt])
+  @@map("recipes")
+}
+
+model Tag {
+  id   String @id @default(cuid())
+  name String @unique
+  slug String @unique
+
+  recipeTags RecipeTag[]
+
+  @@map("tags")
+}
+
+model RecipeTag {
+  recipeId String @map("recipe_id")
+  tagId    String @map("tag_id")
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([recipeId, tagId])
+  @@map("recipe_tags")
+}
+
+model Collection {
+  id        String   @id @default(cuid())
+  name      String
+  isDefault Boolean  @default(false) @map("is_default")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  entries RecipeEntry[]
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@map("collections")
+}
+
+enum RecipeStatus {
+  SAVED
+  COOKING
+  COOKED
+}
+
+model RecipeEntry {
+  id     String       @id @default(cuid())
+  status RecipeStatus @default(SAVED)
+  notes  String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  recipeId     String @map("recipe_id")
+  collectionId String @map("collection_id")
+
+  recipe     Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@unique([recipeId, collectionId])
+  @@index([collectionId])
+  @@map("recipe_entries")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  body      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId   String @map("user_id")
+  recipeId String @map("recipe_id")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+  @@index([recipeId])
+  @@map("reviews")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  body      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId   String @map("user_id")
+  recipeId String @map("recipe_id")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@index([recipeId])
+  @@map("comments")
+}
+
+model Like {
+  userId   String @map("user_id")
+  recipeId String @map("recipe_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, recipeId])
+  @@index([recipeId])
+  @@map("likes")
+}
+
+model Follow {
+  followerId  String @map("follower_id")
+  followingId String @map("following_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  follower  User @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followingId])
+  @@index([followingId])
+  @@map("follows")
+}

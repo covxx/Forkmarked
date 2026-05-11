@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "Forkmarked",
+    "slug": "forkmarked",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "forkmarked",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#F97316"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.srjlabs.forkmarked"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F97316"
+      },
+      "package": "com.srjlabs.forkmarked"
+    },
+    "plugins": ["expo-router", "expo-secure-store"]
+  }
+}
